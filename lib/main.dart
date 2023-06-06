@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:provider/provider.dart';
+import 'package:recipes_app/data/models/local/saved_recipe/saved_recipe.dart';
 import 'package:recipes_app/pressentation/home/home_screen.dart';
 import 'package:recipes_app/pressentation/random_recipe/random_recipe_sceen_view_model.dart';
 import 'package:recipes_app/pressentation/search_recipe/search_recipe_screen_view_model.dart';
+import 'package:recipes_app/utils/constants.dart';
 
-void main() {
+void main() async {
+  // Initialize hive
+  await Hive.initFlutter();
+  Hive.registerAdapter(SavedRecipeAdapter());
+  await Hive.openBox(HIVE_DATABASE_KEY);
+
   runApp(const MyApp());
 }
 

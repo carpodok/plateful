@@ -24,9 +24,11 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBody: true,
+      //extendBody: true,
       body: _screens[_index],
       bottomNavigationBar: FloatingNavbar(
+        selectedItemColor: Color(0xffF4AA39),
+
         onTap: (int val) => setState(() => _index = val),
         currentIndex: _index,
         items: [

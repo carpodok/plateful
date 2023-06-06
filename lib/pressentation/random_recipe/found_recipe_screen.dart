@@ -36,8 +36,7 @@ class _FoundRecipeScreenState extends State<FoundRecipeScreen> {
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(20),
               topRight: Radius.circular(20),
-              bottomRight: Radius.circular(20),
-              bottomLeft: Radius.circular(20),
+
             ),
             child: Container(
               height: screenWidth,
@@ -67,7 +66,12 @@ class _FoundRecipeScreenState extends State<FoundRecipeScreen> {
                       padding: const EdgeInsets.all(8.0),
                       child: _ingredientsListItem(ingredient),
                     );
-                  }))
+                  })),
+          
+          Padding(
+            padding: const EdgeInsets.only(bottom: 80),
+            child: ElevatedButton(onPressed: _onAgainButtonPressed(), child: Text("Again?")),
+          )
         ],
       ),
     );
@@ -76,4 +80,6 @@ class _FoundRecipeScreenState extends State<FoundRecipeScreen> {
   Widget _ingredientsListItem(Ingredient ingredient) {
     return Card();
   }
+
+  _onAgainButtonPressed() {}
 }
