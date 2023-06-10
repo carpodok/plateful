@@ -5,7 +5,6 @@ import 'package:recipes_app/data/models/local/saved_recipe/saved_recipe.dart';
 import 'package:recipes_app/data/models/remote/random_recipe_response.dart';
 import 'package:recipes_app/domain/entities/ingredient.dart';
 import 'package:recipes_app/domain/entities/recipe_detail.dart';
-import 'package:recipes_app/pressentation/random_recipe/found_recipe_screen.dart';
 import 'package:recipes_app/pressentation/random_recipe/random_recipe_sceen_view_model.dart';
 
 import '../../data/repositories/recipe_repository.dart';
@@ -92,7 +91,6 @@ class _RandomRecipeScreenState extends State<RandomRecipeScreen> {
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Column(
-      mainAxisSize: MainAxisSize.max,
       children: [
         ClipRRect(
           borderRadius: BorderRadius.only(
@@ -100,7 +98,7 @@ class _RandomRecipeScreenState extends State<RandomRecipeScreen> {
             topRight: Radius.circular(20),
           ),
           child: Container(
-            height: screenWidth,
+            width: screenWidth,
             child: Image.network(
               recipeDetail.image,
               // Replace with your own image URL
@@ -111,22 +109,27 @@ class _RandomRecipeScreenState extends State<RandomRecipeScreen> {
         SizedBox(
           height: 20,
         ),
-        Text(recipeDetail.title),
+        Text(recipeDetail.title,style: GoogleFonts.livvic(fontSize: 20),),
         SizedBox(
           height: 10,
         ),
         Text("Recipe"),
-        Text(recipeDetail.summary),
+        SizedBox(height: 10,),
+        Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: SizedBox(
+            height: 250,
+            child: SingleChildScrollView(
+                child: Text(recipeDetail.summary)),
+          ),
+        ),
         Expanded(
             child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: recipeDetail.ingredients.length,
                 itemBuilder: (BuildContext context, int index) {
                   final ingredient = Ingredient();
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: _ingredientsListItem(ingredient),
-                  );
+                  return _ingredientsListItem(ingredient);
                 })),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

@@ -9,10 +9,6 @@ class RecipeRepository {
   RecipeRemoteDataSource _apiService = RecipeRemoteDataSource();
   Box _box = Hive.box(HIVE_DATABASE_KEY);
 
-  Future<RandomRecipeResponse?> getRandomRecipe() =>
-      _apiService.fetchRandomRecipe();
-
-
   // Database Actions
   saveRecipe(SavedRecipe savedRecipe) {
     _box.add(savedRecipe);
@@ -26,9 +22,10 @@ class RecipeRepository {
     _box.clear();
   }
 
-
-
   // API Calls
+  Future<RandomRecipeResponse?> getRandomRecipe() =>
+      _apiService.fetchRandomRecipe();
+
   getSimilarRecipes(int id) {}
 
   getRecipe(int id) {}
