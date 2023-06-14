@@ -5,8 +5,8 @@ import 'package:recipes_app/data/models/local/saved_recipe/saved_recipe.dart';
 import 'package:recipes_app/data/models/remote/random_recipe_response.dart';
 import 'package:recipes_app/domain/entities/ingredient.dart';
 import 'package:recipes_app/domain/entities/recipe_detail.dart';
+import 'package:recipes_app/domain/use_cases/save_recipe.dart';
 import 'package:recipes_app/pressentation/random_recipe/random_recipe_sceen_view_model.dart';
-
 import '../../data/repositories/recipe_repository.dart';
 import '../../utils/view_state.dart';
 import '../widgets/loading_screen.dart';
@@ -109,18 +109,22 @@ class _RandomRecipeScreenState extends State<RandomRecipeScreen> {
         SizedBox(
           height: 20,
         ),
-        Text(recipeDetail.title,style: GoogleFonts.livvic(fontSize: 20),),
+        Text(
+          recipeDetail.title,
+          style: GoogleFonts.livvic(fontSize: 20),
+        ),
         SizedBox(
           height: 10,
         ),
         Text("Recipe"),
-        SizedBox(height: 10,),
+        SizedBox(
+          height: 10,
+        ),
         Padding(
           padding: const EdgeInsets.all(15.0),
           child: SizedBox(
             height: 250,
-            child: SingleChildScrollView(
-                child: Text(recipeDetail.summary)),
+            child: SingleChildScrollView(child: Text(recipeDetail.summary)),
           ),
         ),
         Expanded(
@@ -128,7 +132,17 @@ class _RandomRecipeScreenState extends State<RandomRecipeScreen> {
                 scrollDirection: Axis.horizontal,
                 itemCount: recipeDetail.ingredients.length,
                 itemBuilder: (BuildContext context, int index) {
-                  final ingredient = Ingredient();
+                  Ingredient ingredient = Ingredient(
+                      aisle: "aisle",
+                      amount: 0.0,
+                      id: 0,
+                      image: "image",
+                      name: "name",
+                      original: "original",
+                      originalName: "originalName",
+                      unit: "unit",
+                      unitLong: "unitLong",
+                      unitShort: "unitShort");
                   return _ingredientsListItem(ingredient);
                 })),
         Row(
@@ -169,8 +183,6 @@ class _RandomRecipeScreenState extends State<RandomRecipeScreen> {
   }
 
   _onSaveButtonPressed() {
-    RecipeRepository recipeRepository = RecipeRepository();
-
     SavedRecipe savedRecipe = SavedRecipe(
         id: currRecipe.id,
         title: currRecipe.title,
@@ -178,7 +190,7 @@ class _RandomRecipeScreenState extends State<RandomRecipeScreen> {
         summary: currRecipe.summary,
         ingredients: []);
 
-    recipeRepository.saveRecipe(savedRecipe);
+    SaveRecipe.saveRandomRecipe(savedRecipe);
 
     setState(() {
       if (saved) {

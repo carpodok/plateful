@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
+import 'package:recipes_app/data/models/local/saved_recipe/saved_recipe.dart';
+import 'package:recipes_app/data/models/remote/ingredient_response.dart';
+import 'package:recipes_app/domain/entities/ingredient.dart';
+import 'package:recipes_app/domain/entities/recipe_detail.dart';
 import 'package:recipes_app/domain/entities/searched_recipe_list_item.dart';
 import 'package:recipes_app/pressentation/search_recipe/search_recipe_screen_view_model.dart';
 import 'package:recipes_app/pressentation/widgets/loading_screen.dart';
 import 'package:recipes_app/utils/view_state.dart';
 import '../../data/datasources/recipe_remote_data_source.dart';
 import '../../data/models/remote/recipe_response.dart';
+import '../../data/models/remote/search_recipe_response.dart';
+import '../../domain/use_cases/save_recipe.dart';
+import '../../utils/constants.dart';
 
 class SearchRecipeScreen extends StatefulWidget {
   const SearchRecipeScreen({Key? key}) : super(key: key);
@@ -16,10 +24,11 @@ class SearchRecipeScreen extends StatefulWidget {
 }
 
 class _SearchRecipeScreenState extends State<SearchRecipeScreen> {
-  RecipeRemoteDataSource apiService = RecipeRemoteDataSource();
+  // RecipeRemoteDataSource apiService = RecipeRemoteDataSource();
   List<String> _ingredients = [];
-  List<RecipeResponse> _recipes = [];
+  List<SearchedRecipeListItem> _recipes = [];
   int number = 1;
+  final Box _savedRecipesBox = Hive.box(HIVE_DATABASE_KEY);
 
   void _updateWords(String text) {
     setState(() {
@@ -71,17 +80,30 @@ class _SearchRecipeScreenState extends State<SearchRecipeScreen> {
                   case ResponseState.COMPLETE:
                     print("completed");
                     _recipes = viewModel.recipesResponseState.data!;
+
+                    print("${_recipes.length}");
                     return Expanded(
                       child: ListView.builder(
                         itemCount: _recipes.length,
                         itemBuilder: (BuildContext context, int index) {
+
+                          bool saved = false;
+
+                          for (var i = 0; i < _savedRecipesBox.length; i++) {
+                            SavedRecipe savedRecipe = _savedRecipesBox.getAt(i);
+                            saved = _recipes[index].id == savedRecipe.id;
+                          }
+
                           final listItem = SearchedRecipeListItem(
+                              id: _recipes[index].id,
                               title: _recipes[index].title,
                               image: _recipes[index].image,
-                              saved: true);
+                              summary: _recipes[index].summary,
+                              usedIngredients: _recipes[index].usedIngredients);
+
                           return Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: _listItem(listItem),
+                            child: _listItem(listItem,saved),
                           );
                         },
                       ),
@@ -119,25 +141,27 @@ class _SearchRecipeScreenState extends State<SearchRecipeScreen> {
                     listen: false);
             homeScreenViewModel.getRecipesByIngredients(_ingredients, number);
           }
-
         },
         decoration: InputDecoration(
           suffixStyle: GoogleFonts.livvic(),
           hintText: 'Apple,flour...',
           border: InputBorder.none,
-          prefixIcon: Icon(Icons.search),
+          prefixIcon: Icon(
+            Icons.search,
+            color: Color(0xffF4AA39),
+          ),
           contentPadding: EdgeInsets.all(16.0),
         ),
       ),
     );
   }
 
-  Widget _listItem(SearchedRecipeListItem searchedRecipeListItem) {
+  Widget _listItem(SearchedRecipeListItem searchedRecipeListItem, bool saved) {
     return Card(
       elevation: 10,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
-        side: searchedRecipeListItem.saved
+        side: saved
             ? BorderSide(width: 2, color: Colors.orangeAccent)
             : BorderSide.none,
       ),
@@ -171,14 +195,28 @@ class _SearchRecipeScreenState extends State<SearchRecipeScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      searchedRecipeListItem.saved
-                          ? Icon(
-                              Icons.star,
-                              color: Colors.orangeAccent,
+                      saved
+                          ? InkWell(
+                              onTap: () {
+                                print("pressed saved icon");
+                              },
+                              child: Icon(
+                                Icons.star,
+                                color: Colors.orangeAccent,
+                              ),
                             )
-                          : Icon(
-                              Icons.star_border,
-                              color: Colors.black,
+                          : InkWell(
+                              onTap: () {
+                                print("pressed unsaved icon");
+                                setState(() {
+                                  _saveRecipe(searchedRecipeListItem);
+                                });
+
+                              },
+                              child: Icon(
+                                Icons.star_border,
+                                color: Colors.black,
+                              ),
                             )
                     ],
                   )
@@ -207,6 +245,16 @@ class _SearchRecipeScreenState extends State<SearchRecipeScreen> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  _saveRecipe(SearchedRecipeListItem searchedRecipeListItem) {
+    SaveRecipe.save(searchedRecipeListItem);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Saved successfully!'),
       ),
     );
   }

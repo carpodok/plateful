@@ -13,7 +13,7 @@ class LoadingScreen extends StatelessWidget {
             return DecoratedBox(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15),
-                color: index.isEven ? Colors.red : Colors.green,
+                color: index.isEven  ? Color(0xffF4AA39)  : Colors.red,
               ),
             );
           },

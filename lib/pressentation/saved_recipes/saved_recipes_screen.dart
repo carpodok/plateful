@@ -39,6 +39,8 @@ class _SavedRecipesScreenState extends State<SavedRecipesScreen> {
               var currBox = box;
               SavedRecipe recipeData = currBox.getAt(index);
 
+              int id = currBox.keyAt(index);
+
               final SavedRecipe savedRecipeItem = SavedRecipe(
                   id: recipeData.id,
                   title: recipeData.title,

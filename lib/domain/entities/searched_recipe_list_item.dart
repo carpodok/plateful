@@ -1,10 +1,17 @@
-class SearchedRecipeListItem {
+import 'ingredient.dart';
 
+class SearchedRecipeListItem {
+  int id;
   String title;
   String image;
-  bool saved;
+  String summary;
+  List<Ingredient> usedIngredients;
+
 
   SearchedRecipeListItem(
-      {required this.title, required this.image, required this.saved});
-
+      {required this.id,
+      required this.title,
+      required this.image,
+      required this.summary,
+      required this.usedIngredients});
 }
