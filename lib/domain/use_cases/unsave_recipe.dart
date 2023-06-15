@@ -1,9 +1,9 @@
 import '../../data/repositories/recipe_repository.dart';
 
-class DeleteSavedRecipe {
+class UnSaveRecipe {
   static RecipeRepository _recipeRepository = RecipeRepository();
 
-  static delete(int index) {
-    _recipeRepository.deleteSavedRecipe(index);
+  static unSaveLastRecipe() {
+    _recipeRepository.unSaveRecipe();
   }
 }

@@ -8,6 +8,8 @@ import 'package:recipes_app/data/models/remote/random_recipe_response.dart';
 import 'package:recipes_app/domain/entities/ingredient.dart';
 import 'package:recipes_app/domain/entities/recipe_detail.dart';
 import 'package:recipes_app/domain/use_cases/save_recipe.dart';
+import 'package:recipes_app/domain/use_cases/show_animated_toast_message.dart';
+import 'package:recipes_app/domain/use_cases/unsave_recipe.dart';
 import 'package:recipes_app/pressentation/random_recipe/random_recipe_sceen_view_model.dart';
 import '../../data/repositories/recipe_repository.dart';
 import '../../utils/constants.dart';
@@ -23,6 +25,7 @@ class RandomRecipeScreen extends StatefulWidget {
 
 class _RandomRecipeScreenState extends State<RandomRecipeScreen> {
   late bool saved;
+
   late RecipeDetail _currRecipe;
 
   @override
@@ -30,7 +33,6 @@ class _RandomRecipeScreenState extends State<RandomRecipeScreen> {
     super.initState();
 
     saved = false;
-
     WidgetsBinding.instance
         .addPostFrameCallback((timeStamp) => _getRandomRecipe());
   }
@@ -93,11 +95,12 @@ class _RandomRecipeScreenState extends State<RandomRecipeScreen> {
   Widget _buildRandomRecipeBody(RecipeDetail recipeDetail) {
     double screenWidth = MediaQuery.of(context).size.width;
 
+    saved = false;
     final Box _savedRecipesBox = Hive.box(HIVE_DATABASE_KEY);
 
     for (var i = 0; i < _savedRecipesBox.length; i++) {
       SavedRecipe savedRecipe = _savedRecipesBox.getAt(i);
-      saved = _currRecipe.id == savedRecipe.id;
+      if (_currRecipe.id == savedRecipe.id) saved = true;
     }
 
     return Column(
@@ -122,7 +125,7 @@ class _RandomRecipeScreenState extends State<RandomRecipeScreen> {
         Text(
           recipeDetail.title,
           style: GoogleFonts.livvic(
-            fontSize: 23,
+            fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -149,7 +152,7 @@ class _RandomRecipeScreenState extends State<RandomRecipeScreen> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: SizedBox(
-            height: 200,
+            height: 180,
             child: SingleChildScrollView(child: Text(recipeDetail.summary)),
           ),
         ),
@@ -228,15 +231,17 @@ class _RandomRecipeScreenState extends State<RandomRecipeScreen> {
   }
 
   _onSaveButtonPressed() {
-    SaveRecipe.saveRandomRecipe(_currRecipe);
-
     setState(() {
       if (saved) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text("The recipe removed from the saved list")));
+        /* ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text("The recipe removed from the saved list")));*/
+        UnSaveRecipe.unSaveLastRecipe();
+        ShowAnimatedToastMessage.showDeleteToastMessage(context);
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Saved the recipe successfully")));
+        /* ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Saved the recipe successfully")));*/
+        SaveRecipe.saveRandomRecipe(_currRecipe);
+        ShowAnimatedToastMessage.showSaveToastMessage(context);
       }
       saved = !saved;
     });

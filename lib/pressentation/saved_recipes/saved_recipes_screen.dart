@@ -8,6 +8,8 @@ import 'package:recipes_app/domain/use_cases/get_detail_recipe.dart';
 import 'package:recipes_app/pressentation/recipe_detail/recipe_detail_screen.dart';
 import 'package:recipes_app/utils/constants.dart';
 
+import '../../domain/use_cases/show_animated_toast_message.dart';
+
 class SavedRecipesScreen extends StatefulWidget {
   const SavedRecipesScreen({Key? key}) : super(key: key);
 
@@ -97,18 +99,9 @@ class _SavedRecipesScreenState extends State<SavedRecipesScreen> {
     ));
   }
 
-  //TODO
-  Widget savedRecipeListItemCard() {
-    return Column();
-  }
-
   void _onDeleteIconPressed(int index) {
     DeleteSavedRecipe.delete(index);
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Delete successfully!'),
-      ),
-    );
+    ShowAnimatedToastMessage.showDeleteToastMessage(context);
   }
 }

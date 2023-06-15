@@ -16,6 +16,11 @@ class RecipeRepository {
     _box.add(savedRecipe);
   }
 
+  unSaveRecipe(){
+    final lastIndex = _box.length-1;
+    _box.deleteAt(lastIndex);
+  }
+
   deleteSavedRecipe(int index) {
     _box.deleteAt(index);
   }
@@ -28,8 +33,6 @@ class RecipeRepository {
   Future<RandomRecipeResponse?> getRandomRecipe() =>
       _apiService.fetchRandomRecipe();
 
-  getSimilarRecipes(int id) {}
-
   Future<RecipeResponse?> getRecipeById(int id) {
     return _apiService.fetchRecipeById(id);
   }
@@ -38,6 +41,4 @@ class RecipeRepository {
       List<String> ingredients, int number) async {
     return _apiService.fetchRecipesByIngredients(ingredients, number);
   }
-
-  getIngredients(int id) {}
 }

@@ -3,7 +3,7 @@ import 'package:recipes_app/data/models/remote/recipe_response.dart';
 import '../../data/models/remote/ingredient_response.dart';
 import '../entities/ingredient.dart';
 
-class GetRecipeIngrediients {
+class GetRecipeIngredients {
   static List<Ingredient> getIngredientsFromRecipeResponse(
       RecipeResponse recipeResponse) {
     List<Ingredient> ingredients = [];

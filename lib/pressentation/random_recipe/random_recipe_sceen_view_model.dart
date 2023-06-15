@@ -33,7 +33,7 @@ class RandomRecipeViewModel extends ChangeNotifier {
           title: recipeResponse.title,
           image: recipeResponse.image,
           summary: recipeResponse.summary,
-          ingredients: GetRecipeIngrediients.getIngredientsFromRecipeResponse(
+          ingredients: GetRecipeIngredients.getIngredientsFromRecipeResponse(
               recipeResponse));
 
       _setRandomRecipeResponseState(ViewState.complete(recipeDetail));

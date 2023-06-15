@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:recipes_app/domain/entities/recipe_detail.dart';
@@ -66,56 +67,79 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
           Padding(
             padding: const EdgeInsets.all(15.0),
             child: SizedBox(
-              height: 250,
+              height: 200,
               child: SingleChildScrollView(child: Text(currRecipe.summary)),
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Divider(
+              color: CupertinoColors.inactiveGray,
+              thickness: 1,
+              height: 1,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Row(
+              children: [
+                Text(
+                  "Ingredients",
+                  style: GoogleFonts.livvic(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+          ),
           Expanded(
-              child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: currRecipe.ingredients.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    Ingredient ingredient = Ingredient(
-                      amount: currRecipe.ingredients[index].amount,
-                      image: currRecipe.ingredients[index].image,
-                      name: currRecipe.ingredients[index].name,
-                    );
-                    return _ingredientsListItem(ingredient);
-                  })),
+              child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: currRecipe.ingredients.length,
+                itemBuilder: (BuildContext context, int index) {
+                  Ingredient ingredient = Ingredient(
+                    amount: currRecipe.ingredients[index].amount,
+                    image: currRecipe.ingredients[index].image,
+                    name: currRecipe.ingredients[index].name,
+                  );
+                  return _ingredientsListItem(ingredient);
+                }),
+          )),
+
         ],
       ),
     );
   }
 
   _ingredientsListItem(Ingredient ingredient) {
-
-    return SizedBox(
-      height: 50,
-      child: Column(
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
-            ),
-            child: Container(
-              child: Image.network(
-                ingredient.image,
-                // Replace with your own image URL
-                fit: BoxFit.cover,
-              ),
+    return Column(
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
+          child: Container(
+            height: 50,
+            child: Image.network(
+              ingredient.image,
+              // Replace with your own image URL
+              fit: BoxFit.cover,
             ),
           ),
-          SizedBox(
-            height: 5,
-          ),
-          Text(ingredient.name),
-          SizedBox(
-            height: 5,
-          ),
-          Text(ingredient.amount.toString()),
-        ],
-      ),
+        ),
+        SizedBox(
+          height: 5,
+        ),
+        Text(ingredient.name),
+        SizedBox(
+          height: 5,
+        ),
+        Text(ingredient.amount.toString()),
+      ],
     );
   }
 }

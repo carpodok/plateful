@@ -15,6 +15,7 @@ import '../../data/datasources/recipe_remote_data_source.dart';
 import '../../data/models/remote/recipe_response.dart';
 import '../../data/models/remote/search_recipe_response.dart';
 import '../../domain/use_cases/save_recipe.dart';
+import '../../domain/use_cases/show_animated_toast_message.dart';
 import '../../utils/constants.dart';
 import '../recipe_detail/recipe_detail_screen.dart';
 
@@ -174,7 +175,7 @@ class _SearchRecipeScreenState extends State<SearchRecipeScreen> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
         side: saved
-            ? BorderSide(width: 2, color: Colors.orangeAccent)
+            ? BorderSide(width: 2, color: Color(0xffF4AA39))
             : BorderSide.none,
       ),
       child: Padding(
@@ -194,11 +195,6 @@ class _SearchRecipeScreenState extends State<SearchRecipeScreen> {
                           fontSize: 18,
                         ),
                       ),
-                      SizedBox(height: 8),
-                      Text(
-                        'Body Text',
-                        style: TextStyle(fontSize: 16),
-                      ),
                     ],
                   ),
                   SizedBox(
@@ -208,15 +204,10 @@ class _SearchRecipeScreenState extends State<SearchRecipeScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       saved
-                          ? InkWell(
-                              onTap: () {
-                                print("pressed saved icon");
-                              },
-                              child: Icon(
-                                Icons.star,
-                                color: Colors.orangeAccent,
-                              ),
-                            )
+                          ? Icon(
+                            Icons.star,
+                            color: Color(0xffF4AA39),
+                          )
                           : InkWell(
                               onTap: () {
                                 print("pressed unsaved icon");
@@ -263,10 +254,6 @@ class _SearchRecipeScreenState extends State<SearchRecipeScreen> {
   _saveRecipe(SearchedRecipeListItem searchedRecipeListItem) {
     SaveRecipe.saveSearchedRecipeListItem(searchedRecipeListItem);
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Saved successfully!'),
-      ),
-    );
+    ShowAnimatedToastMessage.showSaveToastMessage(context);
   }
 }
