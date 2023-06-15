@@ -21,7 +21,7 @@ class SavedRecipeAdapter extends TypeAdapter<SavedRecipe> {
       title: fields[1] as String,
       image: fields[2] as String,
       summary: fields[3] as String,
-      ingredients: (fields[4] as List).cast<Ingredient>(),
+      ingredients: (fields[4] as List).cast<IngredientModel>(),
     );
   }
 

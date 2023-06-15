@@ -6,30 +6,33 @@ part of 'ingredient.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class IngredientAdapter extends TypeAdapter<Ingredient> {
+class IngredientModelAdapter extends TypeAdapter<IngredientModel> {
   @override
   final int typeId = 0;
 
   @override
-  Ingredient read(BinaryReader reader) {
+  IngredientModel read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Ingredient(
+    return IngredientModel(
       title: fields[0] as String,
       image: fields[1] as String,
+      amount: fields[2] as double,
     );
   }
 
   @override
-  void write(BinaryWriter writer, Ingredient obj) {
+  void write(BinaryWriter writer, IngredientModel obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
-      ..write(obj.image);
+      ..write(obj.image)
+      ..writeByte(2)
+      ..write(obj.amount);
   }
 
   @override
@@ -38,7 +41,7 @@ class IngredientAdapter extends TypeAdapter<Ingredient> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is IngredientAdapter &&
+      other is IngredientModelAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

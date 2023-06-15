@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:recipes_app/data/models/local/saved_recipe/saved_recipe.dart';
+import 'package:recipes_app/domain/entities/recipe_detail.dart';
+import 'package:recipes_app/domain/use_cases/delete_saved_recipe.dart';
+import 'package:recipes_app/domain/use_cases/get_detail_recipe.dart';
 import 'package:recipes_app/pressentation/recipe_detail/recipe_detail_screen.dart';
 import 'package:recipes_app/utils/constants.dart';
 
@@ -39,8 +42,6 @@ class _SavedRecipesScreenState extends State<SavedRecipesScreen> {
               var currBox = box;
               SavedRecipe recipeData = currBox.getAt(index);
 
-              int id = currBox.keyAt(index);
-
               final SavedRecipe savedRecipeItem = SavedRecipe(
                   id: recipeData.id,
                   title: recipeData.title,
@@ -48,13 +49,45 @@ class _SavedRecipesScreenState extends State<SavedRecipesScreen> {
                   summary: recipeData.summary,
                   ingredients: recipeData.ingredients);
 
-              return InkWell(
-                onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => RecipeDetailScreen())),
-                child: ListTile(
-                  title: Text(savedRecipeItem.title),
-                  subtitle: Text(savedRecipeItem.title),
-                  trailing: Image.network(savedRecipeItem.image),
+              RecipeDetail recipeDetail =
+                  GetRecipeDetail.getDetailRecipeFromSavedRecipe(
+                      savedRecipeItem);
+
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: InkWell(
+                  onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => RecipeDetailScreen(
+                            recipeDetail: recipeDetail,
+                          ))),
+                  child: ListTile(
+                    title: Text(savedRecipeItem.title),
+                    //subtitle: Text(savedRecipeItem.title),
+                    trailing: InkWell(
+                        onTap: () {
+                          _onDeleteIconPressed(index);
+                        },
+                        child: Icon(
+                          Icons.delete,
+                          color: Colors.red,
+                        )),
+                    leading: ClipRRect(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10),
+                        bottomRight: Radius.circular(10),
+                        bottomLeft: Radius.circular(10),
+                      ),
+                      child: Container(
+                        height: 100,
+                        child: Image.network(
+                          savedRecipeItem.image,
+                          // Replace with your own image URL
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               );
             },
@@ -62,5 +95,20 @@ class _SavedRecipesScreenState extends State<SavedRecipesScreen> {
         }
       },
     ));
+  }
+
+  //TODO
+  Widget savedRecipeListItemCard() {
+    return Column();
+  }
+
+  void _onDeleteIconPressed(int index) {
+    DeleteSavedRecipe.delete(index);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Delete successfully!'),
+      ),
+    );
   }
 }

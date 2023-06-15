@@ -3,7 +3,7 @@ import 'package:hive_flutter/adapters.dart';
 part 'ingredient.g.dart';
 
 @HiveType(typeId: 0)
-class Ingredient {
+class IngredientModel {
 
   @HiveField(0)
   String title;
@@ -11,8 +11,12 @@ class Ingredient {
   @HiveField(1)
   String image;
 
-  Ingredient({
+  @HiveField(2)
+  double amount;
+
+  IngredientModel({
     required this.title,
     required this.image,
+    required this.amount,
   });
 }

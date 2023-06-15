@@ -17,7 +17,7 @@ class SavedRecipe {
   String summary;
 
   @HiveField(4)
-  List<Ingredient> ingredients;
+  List<IngredientModel> ingredients;
 
   SavedRecipe(
       {required this.id,

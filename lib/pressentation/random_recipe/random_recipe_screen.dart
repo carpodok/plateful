@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 import 'package:recipes_app/data/models/local/saved_recipe/saved_recipe.dart';
 import 'package:recipes_app/data/models/remote/random_recipe_response.dart';
@@ -8,6 +9,7 @@ import 'package:recipes_app/domain/entities/recipe_detail.dart';
 import 'package:recipes_app/domain/use_cases/save_recipe.dart';
 import 'package:recipes_app/pressentation/random_recipe/random_recipe_sceen_view_model.dart';
 import '../../data/repositories/recipe_repository.dart';
+import '../../utils/constants.dart';
 import '../../utils/view_state.dart';
 import '../widgets/loading_screen.dart';
 
@@ -20,7 +22,7 @@ class RandomRecipeScreen extends StatefulWidget {
 
 class _RandomRecipeScreenState extends State<RandomRecipeScreen> {
   late bool saved;
-  late RecipeDetail currRecipe;
+  late RecipeDetail _currRecipe;
 
   @override
   void initState() {
@@ -45,7 +47,7 @@ class _RandomRecipeScreenState extends State<RandomRecipeScreen> {
 
             RecipeDetail recipeDetail =
                 viewModel.randomRecipeResponseState.data!;
-            currRecipe = recipeDetail;
+            _currRecipe = recipeDetail;
             return _buildRandomRecipeBody(recipeDetail);
 
           case ResponseState.ERROR:
@@ -90,6 +92,13 @@ class _RandomRecipeScreenState extends State<RandomRecipeScreen> {
   Widget _buildRandomRecipeBody(RecipeDetail recipeDetail) {
     double screenWidth = MediaQuery.of(context).size.width;
 
+    final Box _savedRecipesBox = Hive.box(HIVE_DATABASE_KEY);
+
+    for (var i = 0; i < _savedRecipesBox.length; i++) {
+      SavedRecipe savedRecipe = _savedRecipesBox.getAt(i);
+      saved = _currRecipe.id == savedRecipe.id;
+    }
+
     return Column(
       children: [
         ClipRRect(
@@ -133,16 +142,10 @@ class _RandomRecipeScreenState extends State<RandomRecipeScreen> {
                 itemCount: recipeDetail.ingredients.length,
                 itemBuilder: (BuildContext context, int index) {
                   Ingredient ingredient = Ingredient(
-                      aisle: "aisle",
-                      amount: 0.0,
-                      id: 0,
-                      image: "image",
-                      name: "name",
-                      original: "original",
-                      originalName: "originalName",
-                      unit: "unit",
-                      unitLong: "unitLong",
-                      unitShort: "unitShort");
+                    amount: 0.0,
+                    image: "image",
+                    name: "name",
+                  );
                   return _ingredientsListItem(ingredient);
                 })),
         Row(
@@ -183,14 +186,7 @@ class _RandomRecipeScreenState extends State<RandomRecipeScreen> {
   }
 
   _onSaveButtonPressed() {
-    SavedRecipe savedRecipe = SavedRecipe(
-        id: currRecipe.id,
-        title: currRecipe.title,
-        image: currRecipe.image,
-        summary: currRecipe.summary,
-        ingredients: []);
-
-    SaveRecipe.saveRandomRecipe(savedRecipe);
+    SaveRecipe.saveRandomRecipe(_currRecipe);
 
     setState(() {
       if (saved) {

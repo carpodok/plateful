@@ -86,7 +86,6 @@ class _SearchRecipeScreenState extends State<SearchRecipeScreen> {
                       child: ListView.builder(
                         itemCount: _recipes.length,
                         itemBuilder: (BuildContext context, int index) {
-
                           bool saved = false;
 
                           for (var i = 0; i < _savedRecipesBox.length; i++) {
@@ -99,11 +98,13 @@ class _SearchRecipeScreenState extends State<SearchRecipeScreen> {
                               title: _recipes[index].title,
                               image: _recipes[index].image,
                               summary: _recipes[index].summary,
-                              usedIngredients: _recipes[index].usedIngredients);
+                              usedIngredients: _recipes[index].usedIngredients,
+                              missedIngredients:
+                                  _recipes[index].missedIngredients);
 
                           return Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: _listItem(listItem,saved),
+                            child: _listItem(listItem, saved),
                           );
                         },
                       ),
@@ -211,7 +212,6 @@ class _SearchRecipeScreenState extends State<SearchRecipeScreen> {
                                 setState(() {
                                   _saveRecipe(searchedRecipeListItem);
                                 });
-
                               },
                               child: Icon(
                                 Icons.star_border,
@@ -250,7 +250,7 @@ class _SearchRecipeScreenState extends State<SearchRecipeScreen> {
   }
 
   _saveRecipe(SearchedRecipeListItem searchedRecipeListItem) {
-    SaveRecipe.save(searchedRecipeListItem);
+    SaveRecipe.saveSearchedRecipeListItem(searchedRecipeListItem);
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(

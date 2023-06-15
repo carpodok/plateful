@@ -16,10 +16,6 @@ class RecipeRepository {
     _box.add(savedRecipe);
   }
 
-  saveRecipe2(int recipeId) {
-    _box.add(_apiService.getRecipeById(recipeId));
-  }
-
   deleteSavedRecipe(int index) {
     _box.deleteAt(index);
   }
@@ -35,7 +31,7 @@ class RecipeRepository {
   getSimilarRecipes(int id) {}
 
   Future<RecipeResponse?> getRecipeById(int id) {
-    return _apiService.getRecipeById(id);
+    return _apiService.fetchRecipeById(id);
   }
 
   Future<List<SearchRecipeResponse>?> getRecipeByIngredients(

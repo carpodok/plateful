@@ -48,7 +48,7 @@ class RecipeRemoteDataSource {
     return null;
   }
 
-  Future<RecipeResponse?> getRecipeById(int id) async {
+  Future<RecipeResponse?> fetchRecipeById(int id) async {
     final uri = "${BASE_URL}recipes/${id}/information";
 
     final Map<String, String> headers = {
@@ -85,7 +85,7 @@ class RecipeRemoteDataSource {
     try {
       final response = await http.get(uri, headers: headers);
 
-      print("response.body ${response.body}");
+      print("random recipe response.body ${response.body}");
       print("status code ${response.statusCode}");
 
       if (response.statusCode == 200) {
