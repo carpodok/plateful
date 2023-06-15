@@ -103,126 +103,133 @@ class _RandomRecipeScreenState extends State<RandomRecipeScreen> {
       if (_currRecipe.id == savedRecipe.id) saved = true;
     }
 
-    return Column(
-      children: [
-        ClipRRect(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
-          ),
-          child: Container(
-            width: screenWidth,
-            child: Image.network(
-              recipeDetail.image,
-              // Replace with your own image URL
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
-        SizedBox(
-          height: 20,
-        ),
-        Text(
-          recipeDetail.title,
-          style: GoogleFonts.livvic(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 10),
-          child: Row(
-            children: [
-              Text(
-                "Recipe",
-                style: GoogleFonts.livvic(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
-          ),
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: SizedBox(
-            height: 180,
-            child: SingleChildScrollView(child: Text(recipeDetail.summary)),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          child: Divider(
-            color: CupertinoColors.inactiveGray,
-            thickness: 1,
-            height: 1,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Row(
-            children: [
-              Text(
-                "Ingredients",
-                style: GoogleFonts.livvic(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
-          ),
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        Expanded(
-            child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: recipeDetail.ingredients.length,
-                itemBuilder: (BuildContext context, int index) {
-                  Ingredient ingredient = Ingredient(
-                    amount: recipeDetail.ingredients[index].amount,
-                    image: recipeDetail.ingredients[index].image,
-                    name: recipeDetail.ingredients[index].name,
-                  );
-                  return _ingredientsListItem(ingredient);
-                })),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return SingleChildScrollView(
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            ElevatedButton(
-              onPressed: () {
-                _onGetRandomRecipeButtonPressed();
-              },
-              child: Text("Another Random Recipe"),
-              style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all<Color>(Color(0xffF4AA39)),
+            ClipRRect(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+              ),
+              child: Container(
+                width: screenWidth,
+                child: Image.network(
+                  recipeDetail.image,
+                  // Replace with your own image URL
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
-            IconButton(
-              onPressed: () {
-                _onSaveButtonPressed();
-              },
-              icon: saved
-                  ? Icon(
-                      Icons.star,
-                      color: Color(0xffF4AA39),
-                    )
-                  : Icon(
-                      Icons.star_border,
-                      color: Color(0xffF4AA39),
-                    ),
+            SizedBox(
+              height: 20,
             ),
+            Text(
+              recipeDetail.title,
+              style: GoogleFonts.livvic(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10),
+              child: Row(
+                children: [
+                  Text(
+                    "Recipe",
+                    style: GoogleFonts.livvic(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: SizedBox(
+                height: 200,
+                child: SingleChildScrollView(child: Text(recipeDetail.summary)),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: Divider(
+                color: CupertinoColors.inactiveGray,
+                thickness: 1,
+                height: 1,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Row(
+                children: [
+                  Text(
+                    "Ingredients",
+                    style: GoogleFonts.livvic(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Expanded(
+                child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: recipeDetail.ingredients.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      Ingredient ingredient = Ingredient(
+                        amount: recipeDetail.ingredients[index].amount,
+                        image: recipeDetail.ingredients[index].image,
+                        name: recipeDetail.ingredients[index].name,
+                      );
+                      return _ingredientsListItem(ingredient);
+                    })),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    _onGetRandomRecipeButtonPressed();
+                  },
+                  child: Text("Another Random Recipe"),
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Color(0xffF4AA39)),
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {
+                    _onSaveButtonPressed();
+                  },
+                  icon: saved
+                      ? Icon(
+                          Icons.star,
+                          color: Color(0xffF4AA39),
+                        )
+                      : Icon(
+                          Icons.star_border,
+                          color: Color(0xffF4AA39),
+                        ),
+                ),
+              ],
+            )
           ],
-        )
-      ],
+        ),
+      ),
     );
   }
 

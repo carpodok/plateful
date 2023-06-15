@@ -3,17 +3,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 import 'package:recipes_app/data/models/local/saved_recipe/saved_recipe.dart';
-import 'package:recipes_app/data/models/remote/ingredient_response.dart';
-import 'package:recipes_app/domain/entities/ingredient.dart';
-import 'package:recipes_app/domain/entities/recipe_detail.dart';
 import 'package:recipes_app/domain/entities/searched_recipe_list_item.dart';
 import 'package:recipes_app/domain/use_cases/get_detail_recipe.dart';
 import 'package:recipes_app/pressentation/search_recipe/search_recipe_screen_view_model.dart';
 import 'package:recipes_app/pressentation/widgets/loading_screen.dart';
 import 'package:recipes_app/utils/view_state.dart';
-import '../../data/datasources/recipe_remote_data_source.dart';
-import '../../data/models/remote/recipe_response.dart';
-import '../../data/models/remote/search_recipe_response.dart';
 import '../../domain/use_cases/save_recipe.dart';
 import '../../domain/use_cases/show_animated_toast_message.dart';
 import '../../utils/constants.dart';
@@ -30,7 +24,7 @@ class _SearchRecipeScreenState extends State<SearchRecipeScreen> {
   // RecipeRemoteDataSource apiService = RecipeRemoteDataSource();
   List<String> _ingredients = [];
   List<SearchedRecipeListItem> _recipes = [];
-  int number = 1;
+  int searchItemNumber = 10;
   final Box _savedRecipesBox = Hive.box(HIVE_DATABASE_KEY);
 
   void _updateWords(String text) {
@@ -159,7 +153,7 @@ class _SearchRecipeScreenState extends State<SearchRecipeScreen> {
             final homeScreenViewModel =
                 Provider.of<SearchRecipeScreenViewModel>(context,
                     listen: false);
-            homeScreenViewModel.getRecipesByIngredients(_ingredients, number);
+            homeScreenViewModel.getRecipesByIngredients(_ingredients, searchItemNumber);
           }
         },
         decoration: InputDecoration(

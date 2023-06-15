@@ -25,7 +25,6 @@ class SearchRecipeScreenViewModel extends ChangeNotifier {
       List<String> ingredients, int number) async {
     _setRecipesResponseState(ViewState.loading());
 
-    //final response = await _recipeRepository.getRecipeByIngredients(ingredients, number);
     final response = await GetSearchedRecipeListItems.get(ingredients, number);
 
     if (response != null) {

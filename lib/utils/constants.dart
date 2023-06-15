@@ -8,7 +8,7 @@ const String RANDOM_RECIPE_END_POINT = "recipes/random";
 
 
 // API KEY
-const String API_KEY = "a1586fff85624d48ae03aed5585d62aa";
+const String API_KEY = "YOUR_API_KEY";
 
 
 // Hive Database

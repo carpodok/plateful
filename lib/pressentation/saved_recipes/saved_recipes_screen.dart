@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:recipes_app/data/models/local/saved_recipe/saved_recipe.dart';
@@ -35,7 +36,10 @@ class _SavedRecipesScreenState extends State<SavedRecipesScreen> {
       builder: (context, Box box, _) {
         if (box.isEmpty) {
           return Center(
-            child: Text('There is no saved recipe yet'),
+            child: Text(
+              'There is no saved recipe yet',
+              style: GoogleFonts.livvic(fontSize: 18),
+            ),
           );
         } else {
           return ListView.builder(
@@ -75,10 +79,10 @@ class _SavedRecipesScreenState extends State<SavedRecipesScreen> {
                         )),
                     leading: ClipRRect(
                       borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10),
-                        bottomRight: Radius.circular(10),
-                        bottomLeft: Radius.circular(10),
+                        bottomLeft: Radius.circular(20),
+                        bottomRight: Radius.circular(20),
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20),
                       ),
                       child: Container(
                         height: 100,
