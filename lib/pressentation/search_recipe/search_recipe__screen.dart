@@ -62,7 +62,8 @@ class _SearchRecipeScreenState extends State<SearchRecipeScreen> {
               ),
               Text(
                 "What's you got ?",
-                style: GoogleFonts.livvic(fontSize: 20),
+                style: GoogleFonts.livvic(
+                    fontSize: 23, fontWeight: FontWeight.w500),
               ),
               SizedBox(
                 height: 20,
@@ -116,7 +117,8 @@ class _SearchRecipeScreenState extends State<SearchRecipeScreen> {
                                                     searchedRecipeListItem),
                                           )));
                                 },
-                                child: _listItem(searchedRecipeListItem, saved)),
+                                child:
+                                    _listItem(searchedRecipeListItem, saved)),
                           );
                         },
                       ),
@@ -141,9 +143,14 @@ class _SearchRecipeScreenState extends State<SearchRecipeScreen> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20.0),
-        color: Colors.grey[200],
+        color: Colors.white,
+        border: Border.all(
+          color: Color(0xffF4AA39),
+          width: 2.0,
+        ),
       ),
       child: TextField(
+        cursorColor: Color(0xffF4AA39),
         onChanged: (text) {
           _ingredients.clear();
           _ingredients = text.split(' ');
@@ -205,9 +212,9 @@ class _SearchRecipeScreenState extends State<SearchRecipeScreen> {
                     children: [
                       saved
                           ? Icon(
-                            Icons.star,
-                            color: Color(0xffF4AA39),
-                          )
+                              Icons.star,
+                              color: Color(0xffF4AA39),
+                            )
                           : InkWell(
                               onTap: () {
                                 print("pressed unsaved icon");
