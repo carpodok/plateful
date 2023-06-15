@@ -10,7 +10,6 @@ import '../../utils/view_state.dart';
 
 class RandomRecipeViewModel extends ChangeNotifier {
   RecipeRepository _recipeRepository = RecipeRepository();
-  RecipeRemoteDataSource _apiService = RecipeRemoteDataSource();
 
   ViewState<RecipeDetail> randomRecipeResponseState =
       ViewState(state: ResponseState.INITIAL);
@@ -23,8 +22,6 @@ class RandomRecipeViewModel extends ChangeNotifier {
 
   getRandomRecipe() async {
     _setRandomRecipeResponseState(ViewState.loading());
-
-    // final response = await _apiService.fetchRandomRecipe();
 
     final response = await _recipeRepository.getRandomRecipe();
 

@@ -13,7 +13,7 @@ class GetRecipeIngrediients {
         Ingredient(
             name: ingredientResponse.name,
             amount: ingredientResponse.amount,
-            image: ingredientResponse.image),
+            image: "https://spoonacular.com/cdn/ingredients_100x100/${ingredientResponse.image}"),
       );
     }
 

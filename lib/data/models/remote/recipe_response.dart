@@ -15,10 +15,11 @@ class RecipeResponse {
       required this.ingredients});
 
   factory RecipeResponse.fromjson(Map<String, dynamic> json) => RecipeResponse(
-      id: json["id"],
-      title: json["title"],
-      image: json["image"],
-      summary: json["summary"],
-      ingredients: json["extendedIngredients"]
-  );
+        id: json["id"],
+        title: json["title"],
+        image: json["image"],
+        summary: json["summary"],
+        ingredients: List<IngredientResponse>.from(json["extendedIngredients"]
+            .map((x) => IngredientResponse.fromJson(x))),
+      );
 }

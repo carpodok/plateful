@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
@@ -91,6 +92,7 @@ class _RandomRecipeScreenState extends State<RandomRecipeScreen> {
 
   Widget _buildRandomRecipeBody(RecipeDetail recipeDetail) {
     double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
 
     final Box _savedRecipesBox = Hive.box(HIVE_DATABASE_KEY);
 
@@ -120,21 +122,62 @@ class _RandomRecipeScreenState extends State<RandomRecipeScreen> {
         ),
         Text(
           recipeDetail.title,
-          style: GoogleFonts.livvic(fontSize: 20),
+          style: GoogleFonts.livvic(
+            fontSize: 23,
+            fontWeight: FontWeight.bold,
+          ),
         ),
-        SizedBox(
-          height: 10,
-        ),
-        Text("Recipe"),
         SizedBox(
           height: 10,
         ),
         Padding(
-          padding: const EdgeInsets.all(15.0),
+          padding: const EdgeInsets.only(left: 10),
+          child: Row(
+            children: [
+              Text(
+                "Recipe",
+                style: GoogleFonts.livvic(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
           child: SizedBox(
-            height: 250,
+            height: 200,
             child: SingleChildScrollView(child: Text(recipeDetail.summary)),
           ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: Divider(
+            color: CupertinoColors.inactiveGray,
+            thickness: 1,
+            height: 1,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Row(
+            children: [
+              Text(
+                "Ingredients",
+                style: GoogleFonts.livvic(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(
+          height: 10,
         ),
         Expanded(
             child: ListView.builder(
@@ -142,9 +185,9 @@ class _RandomRecipeScreenState extends State<RandomRecipeScreen> {
                 itemCount: recipeDetail.ingredients.length,
                 itemBuilder: (BuildContext context, int index) {
                   Ingredient ingredient = Ingredient(
-                    amount: 0.0,
-                    image: "image",
-                    name: "name",
+                    amount: recipeDetail.ingredients[index].amount,
+                    image: recipeDetail.ingredients[index].image,
+                    name: recipeDetail.ingredients[index].name,
                   );
                   return _ingredientsListItem(ingredient);
                 })),
@@ -206,5 +249,43 @@ class _RandomRecipeScreenState extends State<RandomRecipeScreen> {
     randomRecipeViewModel.getRandomRecipe();
   }
 
-  _ingredientsListItem(Ingredient ingredient) {}
+  _ingredientsListItem(Ingredient ingredient) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.only(
+              bottomRight: Radius.circular(20),
+              bottomLeft: Radius.circular(20),
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
+            child: Container(
+              height: 50,
+              child: Image.network(
+                ingredient.image,
+                // Replace with your own image URL
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          Text(
+            ingredient.name,
+            style: GoogleFonts.livvic(),
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          Text(
+            ingredient.amount.toString(),
+            style: GoogleFonts.livvic(),
+          ),
+        ],
+      ),
+    );
+  }
 }

@@ -102,7 +102,7 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
             ),
             child: Container(
               child: Image.network(
-                currRecipe.image,
+                ingredient.image,
                 // Replace with your own image URL
                 fit: BoxFit.cover,
               ),

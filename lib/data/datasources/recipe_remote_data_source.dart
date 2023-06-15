@@ -82,7 +82,7 @@ class RecipeRemoteDataSource {
     'x-api-key': ' $API_KEY',
   };
 
-    try {
+
       final response = await http.get(uri, headers: headers);
 
       print("random recipe response.body ${response.body}");
@@ -96,9 +96,9 @@ class RecipeRemoteDataSource {
         // Error handling
         print('Error: ${response.statusCode}');
       }
-    } catch (e) {
+     /*catch (e) {
       throw "error in getRecipeById/api_service class : $e";
-    }
+    }*/
     return null;
 
 
