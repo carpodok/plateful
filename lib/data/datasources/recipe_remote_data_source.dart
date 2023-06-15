@@ -56,7 +56,6 @@ class RecipeRemoteDataSource {
       'x-api-key': ' $API_KEY',
     };
 
-    try {
       final response = await http.get(Uri.parse(uri), headers: headers);
 
       if (response.statusCode == 200) {
@@ -68,9 +67,9 @@ class RecipeRemoteDataSource {
         print('Error: ${response.statusCode}');
         return null;
       }
-    } catch (e) {
+     /*catch (e) {
       throw "error occured in api service : $e";
-    }
+    }*/
   }
 
   Future<RandomRecipeResponse?> fetchRandomRecipe() async {

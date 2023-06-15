@@ -26,11 +26,9 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
     currRecipe = widget.recipeDetail;
   }
 
-
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-
 
     print("ingredients size :${currRecipe.ingredients.length}");
 

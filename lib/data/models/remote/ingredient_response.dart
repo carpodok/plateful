@@ -4,8 +4,6 @@ class IngredientResponse {
   String image;
   String name;
 
-
-
   IngredientResponse({
 
     required this.amount,

@@ -2,7 +2,7 @@ import 'package:hive_flutter/adapters.dart';
 
 part 'ingredient.g.dart';
 
-@HiveType(typeId: 0)
+@HiveType(typeId: 1)
 class IngredientModel {
 
   @HiveField(0)

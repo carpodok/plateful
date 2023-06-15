@@ -7,6 +7,7 @@ import 'package:recipes_app/data/models/remote/ingredient_response.dart';
 import 'package:recipes_app/domain/entities/ingredient.dart';
 import 'package:recipes_app/domain/entities/recipe_detail.dart';
 import 'package:recipes_app/domain/entities/searched_recipe_list_item.dart';
+import 'package:recipes_app/domain/use_cases/get_detail_recipe.dart';
 import 'package:recipes_app/pressentation/search_recipe/search_recipe_screen_view_model.dart';
 import 'package:recipes_app/pressentation/widgets/loading_screen.dart';
 import 'package:recipes_app/utils/view_state.dart';
@@ -15,6 +16,7 @@ import '../../data/models/remote/recipe_response.dart';
 import '../../data/models/remote/search_recipe_response.dart';
 import '../../domain/use_cases/save_recipe.dart';
 import '../../utils/constants.dart';
+import '../recipe_detail/recipe_detail_screen.dart';
 
 class SearchRecipeScreen extends StatefulWidget {
   const SearchRecipeScreen({Key? key}) : super(key: key);
@@ -93,7 +95,7 @@ class _SearchRecipeScreenState extends State<SearchRecipeScreen> {
                             saved = _recipes[index].id == savedRecipe.id;
                           }
 
-                          final listItem = SearchedRecipeListItem(
+                          final searchedRecipeListItem = SearchedRecipeListItem(
                               id: _recipes[index].id,
                               title: _recipes[index].title,
                               image: _recipes[index].image,
@@ -104,7 +106,16 @@ class _SearchRecipeScreenState extends State<SearchRecipeScreen> {
 
                           return Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: _listItem(listItem, saved),
+                            child: InkWell(
+                                onTap: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => RecipeDetailScreen(
+                                            recipeDetail: GetRecipeDetail
+                                                .getDetailRecipeFromSearchedRecipe(
+                                                    searchedRecipeListItem),
+                                          )));
+                                },
+                                child: _listItem(searchedRecipeListItem, saved)),
                           );
                         },
                       ),

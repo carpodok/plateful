@@ -92,7 +92,6 @@ class _RandomRecipeScreenState extends State<RandomRecipeScreen> {
 
   Widget _buildRandomRecipeBody(RecipeDetail recipeDetail) {
     double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
 
     final Box _savedRecipesBox = Hive.box(HIVE_DATABASE_KEY);
 
